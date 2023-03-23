@@ -40,8 +40,9 @@ function App() {
   return (
     <div className='App'>
       <section>
-        {user ? <Body /> : <SignIn />}
+        {user ? <RetrieveFriendsData /> : <SignIn />}
       </section>
+      
     </div>
   );
 }
@@ -59,6 +60,37 @@ function SignIn(){
 function SignOut(){
   return auth.currentUser && (
     <button onClick={() => auth.signOut()}>Sign Out</button>
+  )
+}
+
+const RetrieveFriendsData = () => {
+  const friendsRef = firestore.collection('friends');
+  const friendQuery = friendsRef.orderBy('createdAt').limit(5);
+
+  const [friends] = useCollectionData(friendQuery, {idField: 'id'}); 
+
+
+  return (
+    <div>
+      {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd}/>)}
+    </div>
+  )
+
+}
+
+const RetrieveReviewData = () => {
+  const reviewsRef = firestore.collection('reviews');
+  const reviewsQuery = reviewsRef.orderBy('createdAt').limit(5);
+
+  const [reviews] = useCollectionData(reviewsQuery, {idField: 'id'}); 
+}
+
+const Friend = (props) => {
+  const {text, uid } = props.message;
+  return (
+      <div>
+          <h3>{text}</h3>
+      </div>
   )
 }
 
