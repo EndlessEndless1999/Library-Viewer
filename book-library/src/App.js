@@ -1,3 +1,4 @@
+import Search from "./components/Search";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarComp from './components/NavbarComp';
@@ -9,6 +10,7 @@ function App() {
     <div className='App'>
       <NavbarComp/>
       <SearchBar placeholder="So, what are we reading today?"/>
+      <Search />
     </div>
   );
 }
