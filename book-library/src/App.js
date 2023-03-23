@@ -1,5 +1,4 @@
-import NavbarComp from './components/NavbarComp';
-import Search from "./components/Search";
+import Body from './components/Body';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -40,15 +39,16 @@ function App() {
 
   return (
     <div className='App'>
-      <NavbarComp/>
-      <Search />
+      <section>
+        {user ? <Body /> : <SignIn />}
+      </section>
     </div>
   );
 }
 
 function SignIn(){
     const signInWithGoogle = () => {
-        const provider = new auth.GoogleAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider);
     }
     return (
