@@ -40,7 +40,7 @@ function App() {
   return (
     <div className='App'>
       <section>
-        {user ? <Body /> : <SignIn />}
+        {user ? <RetrieveReviewData /> : <SignIn />}
       </section>
       
     </div>
@@ -80,13 +80,17 @@ const RetrieveFriendsData = () => {
 
 const RetrieveReviewData = () => {
   const reviewsRef = firestore.collection('reviews');
+  // const commentsRef = firestore.collection('reviews.comments');
   const reviewsQuery = reviewsRef.orderBy('createdAt').limit(5);
 
   const [reviews] = useCollectionData(reviewsQuery, {idField: 'id'}); 
+  console.log(reviews);
+  // const [comments] = useCollectionData(commentsRef, {idField: 'id'});
+
 
   return (
     <div>
-      {reviews && reviews.map(rvw => <Review key={rvw.id} message={rvw.text} rating={rvw.rating} book={rvw.book}/>)}
+      {reviews && reviews.map((rvw, index) => <Review key={index} message={rvw}/>)}
     </div>
   )
 }
@@ -101,17 +105,15 @@ const Friend = (props) => {
 }
 
 const Review = (props) => {
-  const {text, uid} = props.message;
-  const {rating} = props.rating;
-  const {book} = props.book;
-  const {comments} = props.comments;
+  const {text, uid, rating, book} = props.message;
+  // const {comments} = props.comments;
 
   return (
     <div>
-        <h3>{book}</h3>
-        <h3>{rating}</h3>
         <h3>{text}</h3>
-        <div>{comments && comments.map(com => <Comment user={com.user} text={com.text}/>)}</div>
+        <h3>{rating}</h3>
+        <h3>{book}</h3>
+        {/* <div>{comments && comments.map(com => <Comment user={com.user} text={com.text}/>)}</div> */}
 
     </div>
 )
