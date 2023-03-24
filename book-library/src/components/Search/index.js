@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+// import Card from "../cards/cards";
 import API from "../../utils/API";
 
 const Search=() => {
@@ -35,16 +36,27 @@ const Search=() => {
   
     return (
       <div>
-        {JSON.stringify(books, null, 4)}
+        {/* {<Card BookCards={books} />} */}
 
         Result:
-        JSON.stringify(books, null, 4);
         {books && books.map((book) => {          
             let bookInfo = book.volumeInfo;
-            if ((bookInfo.imageLinks != undefined) && (bookInfo.imageLinks.smallThumbnail != undefined)) {
-              console.log(bookInfo);
+            if ((bookInfo.imageLinks !== undefined) && (bookInfo.imageLinks.smallThumbnail !== undefined)) {
+              return (
+                <div>
+                  Image: <img src={bookInfo.imageLinks.smallThumbnail} alt={bookInfo.title} /><br />
+                  Title: {bookInfo.title}<br />
+                  Author: {bookInfo.authors.join(", ")}<br />
+                  Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br />
+                  Description: {bookInfo.description}
+                </div>
+              )
+            } else {
+              return null;
             }
         })}
+
+
 
         {/* <Container style={{ minHeight: "100vh" }}>
           <h1 className="text-center">Search For Anything on Wikipedia</h1>
