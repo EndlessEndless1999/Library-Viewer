@@ -83,6 +83,12 @@ const RetrieveReviewData = () => {
   const reviewsQuery = reviewsRef.orderBy('createdAt').limit(5);
 
   const [reviews] = useCollectionData(reviewsQuery, {idField: 'id'}); 
+
+  return (
+    <div>
+      {reviews && reviews.map(rvw => <Review key={rvw.id} message={rvw.text} rating={rvw.rating} book={rvw.book}/>)}
+    </div>
+  )
 }
 
 const Friend = (props) => {
@@ -91,6 +97,35 @@ const Friend = (props) => {
       <div>
           <h3>{text}</h3>
       </div>
+  )
+}
+
+const Review = (props) => {
+  const {text, uid} = props.message;
+  const {rating} = props.rating;
+  const {book} = props.book;
+  const {comments} = props.comments;
+
+  return (
+    <div>
+        <h3>{book}</h3>
+        <h3>{rating}</h3>
+        <h3>{text}</h3>
+        <div>{comments && comments.map(com => <Comment user={com.user} text={com.text}/>)}</div>
+
+    </div>
+)
+}
+
+const Comment = (props) => {
+  const {user, uid} = props.user
+  const {text} = props.message
+
+  return (
+    <div>
+      <h3>{user}</h3>
+      <h4>{text}</h4>
+    </div>
   )
 }
 
