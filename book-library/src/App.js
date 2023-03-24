@@ -40,7 +40,7 @@ function App() {
   return (
     <div className='App'>
       <section>
-        {user ? <RetrieveFriendsData /> : <SignIn />}
+        {user ? <Body /> : <SignIn />}
       </section>
       
     </div>
