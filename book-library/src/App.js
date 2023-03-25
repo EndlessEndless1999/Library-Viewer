@@ -7,8 +7,10 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useCollectionData, useCollectionDataOnce, useDocumentData } from 'react-firebase-hooks/firestore';
 import { getAnalytics } from "firebase/analytics";
+import { documentId } from 'firebase/firestore';
+import { getIdToken } from 'firebase/auth';
 
 
 const firebaseConfig = {
@@ -80,17 +82,31 @@ const RetrieveFriendsData = () => {
 
 const RetrieveReviewData = () => {
   const reviewsRef = firestore.collection('reviews');
-  // const commentsRef = firestore.collection('reviews.comments');
   const reviewsQuery = reviewsRef.orderBy('createdAt').limit(5);
-
   const [reviews] = useCollectionData(reviewsQuery, {idField: 'id'}); 
-  console.log(reviews);
-  // const [comments] = useCollectionData(commentsRef, {idField: 'id'});
 
+  
+    
 
   return (
     <div>
-      {reviews && reviews.map((rvw, index) => <Review key={index} message={rvw}/>)}
+      {reviews && reviews.map((rvw, index) => <><Review key={Math.floor(Math.random() * 1000)} message={rvw}/><RetrieveCommentData key={Math.floor(Math.random() * 1000)} path={rvw}/></>)}
+    </div>
+  )
+}
+
+const RetrieveCommentData = (props) => {
+  const {postId, uid} = props.path;
+  const commentsRef = firestore.collectionGroup('comments').where('postId', '==', postId);
+  console.log(commentsRef);
+
+  const [comments] = useCollectionData(commentsRef, {idField: 'id'})
+
+  console.log(commentsRef);
+
+  return (
+    <div>
+      {comments && comments.map((com, index) => <Comment key={index} message={com}/>)}
     </div>
   )
 }
@@ -105,26 +121,22 @@ const Friend = (props) => {
 }
 
 const Review = (props) => {
-  const {text, uid, rating, book} = props.message;
-  // const {comments} = props.comments;
+  const {text, uid, rating, book, postId} = props.message;
 
   return (
     <div>
         <h3>{text}</h3>
         <h3>{rating}</h3>
         <h3>{book}</h3>
-        {/* <div>{comments && comments.map(com => <Comment user={com.user} text={com.text}/>)}</div> */}
-
     </div>
 )
 }
 
 const Comment = (props) => {
-  const {user, uid} = props.user
-  const {text} = props.message
+  const {text, user, uid} = props.message
 
   return (
-    <div>
+    <div id='comment'>
       <h3>{user}</h3>
       <h4>{text}</h4>
     </div>
