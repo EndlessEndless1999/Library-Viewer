@@ -1,11 +1,12 @@
 import { Label, Input } from '@rebass/forms'
 import { Box, Button } from 'rebass'
+import { Typography, Rating } from '@mui/material'
 
 
-const CommentForm = () => {
+const ReviewForm = () => {
 
     function handleClick(){
-        console.log('Working.');
+        console.log('Review Working.');
     }
 
 
@@ -13,17 +14,22 @@ const CommentForm = () => {
 
     return (
         <Box>
-            <Label htmlFor='comment'>Comment</Label>
+            <Label htmlFor='review'>Review</Label>
+            <Rating name="size-medium" defaultValue={2} />
             <Input
-            id='commentForm'
-            name='comment'
-            type='comment'
-            placeholder='Add Your Comment Here.'
+            id='reviewForm'
+            name='review'
+            type='review'
+            placeholder='Add Your Review Here.'
             />
             <Button onClick={handleClick} variant='outline' mr={2}>Submit</Button>
         </Box>
     )
 }
 
+export default ReviewForm;
 
-export default CommentForm;
+
+
+
+

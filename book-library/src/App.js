@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rebass';
 import BookCards from "./components/cards/cards";
 import CommentForm from './components/DataWrite/CommentForm';
+import ReviewForm from './components/DataWrite/ReviewForm';
 
 // Database Imports
 import firebase from 'firebase/compat/app';
@@ -49,6 +50,7 @@ function App() {
       <Search />
       <BookCards />
       <CommentForm />
+      <ReviewForm />
     </div>
   );
 }
