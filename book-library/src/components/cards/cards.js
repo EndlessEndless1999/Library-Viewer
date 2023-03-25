@@ -3,7 +3,7 @@ import './cards.css';
 import {Card, Image, Heading} from 'rebass';
 // import App from '../../App';
 
-const BookCards = (props) => {
+const BookCards =() => {
     return(
         <div className="card">
             <Card width={256}>
@@ -25,4 +25,4 @@ const BookCards = (props) => {
     )
 }
 
-export default BookCards;
+export default Card;
