@@ -4,6 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rebass';
 import BookCards from "./components/cards/cards";
+import CommentForm from './components/DataWrite/CommentForm';
 
 // Database Imports
 import firebase from 'firebase/compat/app';
@@ -47,6 +48,7 @@ function App() {
       <NavbarComp/>
       <Search />
       <BookCards />
+      <CommentForm />
     </div>
   );
 }
