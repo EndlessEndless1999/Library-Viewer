@@ -3,7 +3,7 @@ import './cards.css';
 import {Card, Image, Heading} from 'rebass';
 // import App from '../../App';
 
-const BookCards =() => {
+const BookCards = (props) => {
     return(
         <div className="card">
             <Card width={256}>
