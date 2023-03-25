@@ -125,9 +125,9 @@ const Review = (props) => {
 
   return (
     <div>
-        <h3>{text}</h3>
-        <h3>{rating}</h3>
         <h3>{book}</h3>
+        <h3>{rating}</h3>
+        <h3>{text}</h3>
     </div>
 )
 }
