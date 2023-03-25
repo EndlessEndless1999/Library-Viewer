@@ -1,6 +1,6 @@
 import { Label, Input } from '@rebass/forms'
 import { Box, Button } from 'rebass'
-import { Typography, Rating } from '@mui/material'
+import { Rating } from '@mui/material'
 
 
 const ReviewForm = () => {
