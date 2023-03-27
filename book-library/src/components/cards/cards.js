@@ -3,8 +3,7 @@ import './cards.css';
 import {Card, Image, Heading, Flex} from 'rebass';
 // import App from '../../App';
 
-const BookCards =({books}) => {
-    console.log(books);
+const BookCards = ({books}) => {
     return(
         <div>
         {books && books.map((book) => {         
