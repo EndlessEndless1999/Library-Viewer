@@ -1,7 +1,6 @@
 import React from 'react';
 import './cards.css';
 import {Card, Image, Heading, Flex} from 'rebass';
-// import App from '../../App';
 
 const BookCards = ({books}) => {
     return(
@@ -10,7 +9,8 @@ const BookCards = ({books}) => {
             let bookInfo = book.volumeInfo;
             if ((bookInfo.imageLinks !== undefined) && (bookInfo.imageLinks.smallThumbnail !== undefined)) {
                 return (
-                    <div className="card">
+                    // added key to handle unique "key" pop warning
+                    <div className="card" key={book.id}>
                         <Flex>
                         <Card 
                         p={3}

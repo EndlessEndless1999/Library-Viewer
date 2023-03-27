@@ -1,4 +1,4 @@
-import SearchBar from "./components/Search";
+import Search from "./components/Search/Search";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rebass';
@@ -45,6 +45,9 @@ let userData;
 
 function App() {
 
+  // for storing searh results from API
+  const [books, setBooks] = useState("");
+
   
   //LOGIN CODE. NEEDS TO BE IN APP.JS
   
@@ -60,8 +63,8 @@ function App() {
     <div className='App'>
       <SignIn />
       <NavbarComp/>
-      <SearchBar placeholder="So, what are we reading today?"/>
-      <BookCards />
+      <Search placeholder="So, what are we reading today?" setBooks={setBooks}/>
+      <BookCards books={books}/>
     </div>
   );
 }
