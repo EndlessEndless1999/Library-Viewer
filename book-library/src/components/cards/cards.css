@@ -1,4 +1,8 @@
 .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 256px;
     background-color: #E5E5E5;
     color: black;
 }

@@ -1,5 +1,4 @@
-import NavbarComp from './components/NavbarComp';
-import Search from "./components/Search";
+import SearchBar from "./components/Search";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rebass';
@@ -21,6 +20,8 @@ import { documentId } from 'firebase/firestore';
 import { getIdToken } from 'firebase/auth';
 
 
+import 'rebass';
+import NavbarComp from './components/NavbarComp';
 
 
 
@@ -59,10 +60,8 @@ function App() {
     <div className='App'>
       <SignIn />
       <NavbarComp/>
-      <Search />
+      <SearchBar placeholder="So, what are we reading today?"/>
       <BookCards />
-      <RetrieveReviewData />
-      <ReviewForm message={userData} firestore={firestore}/>
     </div>
   );
 }
