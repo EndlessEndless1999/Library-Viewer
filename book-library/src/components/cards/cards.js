@@ -13,7 +13,6 @@ const BookCards = ({books}) => {
                     // added key to handle unique "key" pop warning
                     <div className="card" key={book.id}>
                         <Flex>
-                        <Box>
                         <Card>
                             <Image src={bookInfo.imageLinks.smallThumbnail} />
                             <Heading>{bookInfo.title}</Heading>
@@ -21,7 +20,6 @@ const BookCards = ({books}) => {
                             {/* Author: {bookInfo.authors.join(", ")}<br />
                             Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}
                         </Card>
-                        </Box>
                         </Flex>
                     </div>
                 )
