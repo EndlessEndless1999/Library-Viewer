@@ -250,15 +250,21 @@ const CommentForm = (props) => {
 }
 
 
-export function addBook(book) {
+export async function AddBook(book) {
+  const post = book + userData;
   const data = {
     book: book,
-    userId: userData
+    userId: userData,
+    postId: post
   }
-  console.log('working my pal');
-  const query = firestore.collection('user-library');
-  query.add(data);
-  console.log(query);
+  const query = await firestore.collection('user-library').doc(post).set(data);
+  const conditionquery = firestore.collection('user-library').where('postId', '==', post);
+
+
+  
+
+  
+
 }
 
 export default App;
