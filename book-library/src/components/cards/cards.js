@@ -15,6 +15,7 @@ const BookCards = ({books}) => {
         <div>
         {books && books.map((book) => {         
             let bookInfo = book.volumeInfo;
+            let bookId = book.id;
             if ((bookInfo.imageLinks !== undefined) && (bookInfo.imageLinks.smallThumbnail !== undefined)) {
                 return (
                     // added key to handle unique "key" pop warning
@@ -27,7 +28,7 @@ const BookCards = ({books}) => {
                         >
                             <Image src={bookInfo.imageLinks.smallThumbnail} />
                             <Heading>{bookInfo.title}</Heading>
-                            <Checkbox onClick={addBook} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
+                            <Checkbox onClick={() => {addBook(bookId)}} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
                             <p>{bookInfo.description}</p>
                             {/* Author: {bookInfo.authors.join(", ")}<br />
                             Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}

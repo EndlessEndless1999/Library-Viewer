@@ -250,8 +250,15 @@ const CommentForm = (props) => {
 }
 
 
-export function addBook() {
+export function addBook(book) {
+  const data = {
+    book: book,
+    userId: userData
+  }
   console.log('working my pal');
+  const query = firestore.collection('user-library');
+  query.add(data);
+  console.log(query);
 }
 
 export default App;
