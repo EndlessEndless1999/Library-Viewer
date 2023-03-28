@@ -15,7 +15,8 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useCollectionDataOnce, useDocumentData } from 'react-firebase-hooks/firestore';
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, setUserProperties } from "firebase/analytics";
+import { getAdditionalUserInfo } from "firebase/auth";
 import { documentId } from 'firebase/firestore';
 import { getIdToken } from 'firebase/auth';
 
@@ -41,6 +42,7 @@ const analytics = getAnalytics(app);
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 let userData;
+let isNewUser;
 
 
 function App() {
@@ -53,7 +55,7 @@ function App() {
   
   const [user] = useAuthState(auth);
   if (user){
-    userData = user.email;
+    userData = user.uid;
 
     console.log(userData);
   }else{
@@ -69,15 +71,32 @@ function App() {
       <BookCards books={books}/>
       <FriendForm />
       <RetrieveFriendsData />
+      <ReviewForm />
+      <RetrieveReviewData />
+      <RetrieveLibraryData />
     </div>
   );
 }
 
 function SignIn(){
     const signInWithGoogle = () => {
+        let username = '';
+        let bio;
         const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
-        const query = firestore.collection('users').doc(userData).set({email: userData})
+        auth.signInWithPopup(provider).then((result) => {
+          const details = result.additionalUserInfo;
+          isNewUser = details.isNewUser;
+          console.log(isNewUser);
+          if(isNewUser){
+            console.log('working')
+            username = prompt('Please Enter a Username');
+            bio = prompt('Please provide a Bio');
+            const query = firestore.collection('users').doc(userData).set({user: userData, username: username, bio: bio})
+          }
+        });
+
+
+        
     }
     return (
         <button onClick={signInWithGoogle}>Sign In</button>
@@ -100,6 +119,7 @@ const RetrieveFriendsData = () => {
 
   return (
     <div id="friends">
+      <h2>Your Friends:</h2>
       {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd}/>)}
     </div>
   )
@@ -116,6 +136,7 @@ const RetrieveReviewData = () => {
 
   return (
     <div>
+      <h2>Your Reviews:</h2>
       {reviews && reviews.map((rvw, index) => <><Review key={Math.floor(Math.random() * 1000)} message={rvw}/><CommentForm message={userData} data={rvw}/><RetrieveCommentData key={Math.floor(Math.random() * 1000)} path={rvw}/></>)}
     </div>
   )
@@ -135,6 +156,22 @@ const RetrieveCommentData = (props) => {
       {comments && comments.map((com, index) => <Comment key={index} message={com}/>)}
     </div>
   )
+}
+
+const RetrieveLibraryData = () => {
+  const query = firestore.collection('user-library').where('userId', '==', userData);
+  const [library] = useCollectionData(query, {idField: 'id'})
+
+  return (
+    <div>
+      <h2>Your Saved Books:</h2>
+      {library && library.map((book, index) => <Book key={index} message={book}/>)}
+    </div>
+  )
+}
+
+const Book = (props) => {
+  const { book, postId, userId } = props.message;
 }
 
 const Friend = (props) => {
@@ -285,7 +322,7 @@ const FriendForm = () => {
           id='friendForm'
           name='friend'
           type='friend'
-          placeholder='Search by email.'
+          placeholder='Search by username.'
           onChange={handleChange}
           />
           <Button onClick={handleClick} variant='outline' mr={2}>Search</Button>
