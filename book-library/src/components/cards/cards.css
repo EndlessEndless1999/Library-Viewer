@@ -1,7 +1,7 @@
 .bookArea {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 20%;
+    padding-top: 0;
     margin: 5%
 }
 
