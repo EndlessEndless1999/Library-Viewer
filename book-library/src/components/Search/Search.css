@@ -1,4 +1,11 @@
 .search {
+  background-image: url("../../images/Untitled.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 400px;
+}
+
+.search .container{
     display: flex;
     align-items: center;
     justify-content: center;
