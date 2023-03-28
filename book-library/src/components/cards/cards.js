@@ -29,7 +29,7 @@ const BookCards = ({books}) => {
                         >
                             <Image src={bookInfo.imageLinks.smallThumbnail} />
                             <Heading>{bookInfo.title}</Heading>
-                            <Checkbox onClick={() => {AddBook(bookId)}} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
+                            <Checkbox onClick={() => {AddBook(bookInfo, bookId)}} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
                             <SimplePopper message={bookInfo.description} />
                             {/* Author: {bookInfo.authors.join(", ")}<br />
                             Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}

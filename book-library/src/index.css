@@ -12,6 +12,8 @@ code {
     monospace;
 }
 
+
+
 .navbar {
   background-color: orange;
 }
@@ -33,4 +35,5 @@ code {
 .book-wrapper {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }

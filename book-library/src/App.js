@@ -8,6 +8,11 @@ import { Rating } from '@mui/material'
 import { useState } from 'react'
 import { serverTimestamp } from 'firebase/firestore'
 import BookCards from "./components/cards/cards";
+import {Card, Image, Heading, Flex} from 'rebass';
+import Checkbox from '@mui/material/Checkbox';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import SimplePopper from "./components/cards/PreviewButton";
 
 // Database Imports
 import firebase from 'firebase/compat/app';
@@ -165,13 +170,33 @@ const RetrieveLibraryData = () => {
   return (
     <div>
       <h2>Your Saved Books:</h2>
+      <div className="book-wrapper">
       {library && library.map((book, index) => <Book key={index} message={book}/>)}
+      </div>
+      
     </div>
   )
 }
 
 const Book = (props) => {
-  const { book, postId, userId } = props.message;
+  const { bookId, bookName, bookCover, bookPreview, postId, userId } = props.message;     
+                return (
+                    <div className="card" key={bookId}>
+                        <Flex>
+                        <Card 
+                        p={3}
+                        width={256}
+                        color='black'
+                        >
+                            <Image src={bookCover} />
+                            <Heading>{bookName}</Heading>
+                            <SimplePopper message={bookPreview} />
+                            {/* Author: {bookInfo.authors.join(", ")}<br />
+                            Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}
+                        </Card>
+                        </Flex>
+                    </div>
+                )
 }
 
 const Friend = (props) => {
@@ -330,10 +355,13 @@ const FriendForm = () => {
   )
 }
 
-export async function AddBook(book) {
-  const post = book + userData;
+export async function AddBook(bookInfo, bookId) {
+  const post = bookId + userData;
   const data = {
-    book: book,
+    bookId: bookId,
+    bookName: bookInfo.title,
+    bookCover: bookInfo.imageLinks.smallThumbnail,
+    bookPreview: bookInfo.description,
     userId: userData,
     postId: post
   }
