@@ -249,4 +249,9 @@ const CommentForm = (props) => {
   )
 }
 
+
+export function addBook() {
+  console.log('working my pal');
+}
+
 export default App;

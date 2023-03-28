@@ -1,8 +1,16 @@
 import React from 'react';
 import './cards.css';
 import {Card, Image, Heading, Flex} from 'rebass';
+import { addBook } from '../../App';
+import Checkbox from '@mui/material/Checkbox';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
 
 const BookCards = ({books}) => {
+
+
+
+
     return(
         <div>
         {books && books.map((book) => {         
@@ -19,6 +27,7 @@ const BookCards = ({books}) => {
                         >
                             <Image src={bookInfo.imageLinks.smallThumbnail} />
                             <Heading>{bookInfo.title}</Heading>
+                            <Checkbox onClick={addBook} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
                             <p>{bookInfo.description}</p>
                             {/* Author: {bookInfo.authors.join(", ")}<br />
                             Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}
