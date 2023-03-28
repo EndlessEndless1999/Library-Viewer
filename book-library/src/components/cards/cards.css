@@ -1,8 +1,25 @@
-.card {
+.bookArea {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 20%;
+    margin: 5%
+}
+
+div .card {
+    display: grid;
+    align-items: start;
     justify-content: center;
-    width: 256px;
+    margin: 10px;
+    padding: 20px;
+    overflow-y: scroll;
+    max-height: 500px;
+    max-width: 300px;
+    width: 300px;
     background-color: #E5E5E5;
-    color: black;
+    color: #363636;
+}
+
+.card p, h2 {
+    padding: 10px;
+    text-align: start;
 }
