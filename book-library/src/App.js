@@ -56,6 +56,8 @@ function App() {
     userData = user.email;
 
     console.log(userData);
+  }else{
+    return;
   }
 
 
@@ -65,6 +67,8 @@ function App() {
       <NavbarComp/>
       <Search placeholder="So, what are we reading today?" setBooks={setBooks}/>
       <BookCards books={books}/>
+      <FriendForm />
+      <RetrieveFriendsData />
     </div>
   );
 }
@@ -73,6 +77,7 @@ function SignIn(){
     const signInWithGoogle = () => {
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider);
+        const query = firestore.collection('users').doc(userData).set({email: userData})
     }
     return (
         <button onClick={signInWithGoogle}>Sign In</button>
@@ -86,14 +91,15 @@ function SignOut(){
 }
 
 const RetrieveFriendsData = () => {
-  const friendsRef = firestore.collection('friends');
+  const friendsRef = firestore.collection('friend-connection').where('userId', '==', userData);
   const friendQuery = friendsRef.orderBy('createdAt').limit(5);
 
-  const [friends] = useCollectionData(friendQuery, {idField: 'id'}); 
+  const [friends] = useCollectionData(friendsRef, {idField: 'id'}); 
 
+  console.log(friends);
 
   return (
-    <div>
+    <div id="friends">
       {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd}/>)}
     </div>
   )
@@ -132,10 +138,10 @@ const RetrieveCommentData = (props) => {
 }
 
 const Friend = (props) => {
-  const {text, uid } = props.message;
+  const {friendId, uid } = props.message;
   return (
       <div>
-          <h3>{text}</h3>
+          <h3>{friendId}</h3>
       </div>
   )
 }
@@ -249,6 +255,43 @@ const CommentForm = (props) => {
   )
 }
 
+const FriendForm = () => {
+
+  const [text, setText] = useState('');
+
+  const data = {
+      userId: userData,
+      friendId: text,
+      createdAt: serverTimestamp()
+  }
+
+  function handleClick(){
+    console.log(data);
+    const ref = firestore.collection('friend-connection');
+    ref.add(data);
+  }
+
+  function handleChange(event){
+      setText(event.target.value);
+  }
+
+
+
+
+  return (
+      <Box>
+          <Label htmlFor='comment'>Add a Friend!</Label>
+          <Input
+          id='friendForm'
+          name='friend'
+          type='friend'
+          placeholder='Search by email.'
+          onChange={handleChange}
+          />
+          <Button onClick={handleClick} variant='outline' mr={2}>Search</Button>
+      </Box>
+  )
+}
 
 export async function AddBook(book) {
   const post = book + userData;
@@ -258,7 +301,6 @@ export async function AddBook(book) {
     postId: post
   }
   const query = await firestore.collection('user-library').doc(post).set(data);
-  const conditionquery = firestore.collection('user-library').where('postId', '==', post);
 
 
   
