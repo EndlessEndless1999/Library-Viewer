@@ -1,17 +1,17 @@
 import React from 'react';
 import './cards.css';
-import {Card, Image, Heading, Flex, Box} from 'rebass';
-// import App from '../../App';
+import {Card, Image, Heading, Flex} from 'rebass';
 
-const BookCards =({books}) => {
-    console.log(books);
+
+const BookCards = ({books}) => {
     return(
         <div className='bookArea'>
         {books && books.map((book) => {         
             let bookInfo = book.volumeInfo;
             if ((bookInfo.imageLinks !== undefined) && (bookInfo.imageLinks.smallThumbnail !== undefined)) {
                 return (
-                    <div className='card'>
+                    // added key to handle unique "key" pop warning
+                    <div className="card" key={book.id}>
                         <Flex>
                         <Box>
                         <Card>
