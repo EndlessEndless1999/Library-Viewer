@@ -8,7 +8,7 @@ export default {
       'https://www.googleapis.com/books/v1/volumes?q='+
       query+
       '&key=AIzaSyD04OyF_NfroWPvHERp0xUDD9-OIEG0Mn8'+
-      '&maxResults=6'
+      '&maxResults=16'
     );
   }
 };
