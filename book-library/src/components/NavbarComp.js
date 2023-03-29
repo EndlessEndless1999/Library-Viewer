@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 /*Navbar with some css styles - font color and hover effect*/
 
 export default class NavbarComp extends Component {
-  render() {
+  render(props) {
     return (
       <div>
     <Navbar collapseOnSelect expand="lg" className="navbar">

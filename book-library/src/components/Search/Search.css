@@ -1,7 +1,9 @@
 .search {
-  background-image: url("../../images/Untitled.jpeg");
+  background-image: linear-gradient(to bottom, rgba(255, 165, 0, 0), rgba(255, 166, 0, 0.342), rgb(255, 166, 0)), url("../../images/wallpaperflare.com_wallpaper\ \(2\).jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
+  position: relative;
   height: 400px;
 }
 
@@ -10,6 +12,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .searchInputs {
     margin-top: 150px;
     display: flex;
@@ -44,4 +47,16 @@
   
   #clearBtn {
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 600px) {
+    .search {
+      height: 300px;
+    }
+    .searchInputs {
+      margin-top: 100px;
+    }
+    .search input {
+      width: 300px;
+    }
   }
