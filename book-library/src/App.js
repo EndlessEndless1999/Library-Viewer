@@ -21,7 +21,6 @@ import Title from "./components/Title";
 import PropTypes from 'prop-types';
 import ReviewModal from "./components/ReviewModal";
 import CommentModal from "./components/CommentModal";
-import ViewCommentModal from "./components/ViewCommentModal";
 
 // Database Imports
 import firebase from 'firebase/compat/app';
