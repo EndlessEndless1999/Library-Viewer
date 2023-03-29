@@ -8,14 +8,14 @@ import Favorite from '@mui/icons-material/Favorite';
 import SimplePopper from './PreviewButton';
 import Title from '../Title';
 
+
 const BookCards = ({books}) => {
 
 
 
 
     return(
-        <div className='book-wrapper'>
-        <Title label='Search Results:' />
+        <div className='bookArea'>
         {books && books.map((book) => {         
             let bookInfo = book.volumeInfo;
             let bookId = book.id;
@@ -24,11 +24,7 @@ const BookCards = ({books}) => {
                     // added key to handle unique "key" pop warning
                     <div className="card" key={book.id}>
                         <Flex>
-                        <Card 
-                        p={3}
-                        width={256}
-                        color='black'
-                        >
+                        <Card>
                             <Image src={bookInfo.imageLinks.smallThumbnail} />
                             <Heading>{bookInfo.title}</Heading>
                             <Checkbox onClick={() => {AddBook(bookInfo, bookId)}} icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
@@ -43,7 +39,7 @@ const BookCards = ({books}) => {
             return null;
             }
         })}       
-         </div>
+        </div>
     )
 }
 
