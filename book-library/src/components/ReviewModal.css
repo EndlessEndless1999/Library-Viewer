@@ -1,0 +1,8 @@
+.book-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5%;
+    align-items: start;
+    justify-content: center;
+}
+

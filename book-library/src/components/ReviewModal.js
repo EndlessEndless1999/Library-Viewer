@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import React from 'react';
+import ReviewCss from './ReviewModal.css';
 import {Divider, Tabs, Tab, Typography, Box, Modal, Button } from '@mui/material';
 import { ReviewForm } from '../App';
 
@@ -22,7 +23,7 @@ const ReviewModal = (props) => {
         const handleClose = () => setOpen(false);
 
         return (
-        <>
+        <div className='reviewCards'>
         <Button onClick={handleOpen}>Write Review</Button>
         <Modal
           open={open}
@@ -34,7 +35,7 @@ const ReviewModal = (props) => {
             <section>{open ? <ReviewForm message={data}/> : <div></div>}</section>
           </Box>
         </Modal>
-        </>)
+        </div>)
       }
 
 
