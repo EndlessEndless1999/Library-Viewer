@@ -16,11 +16,11 @@ export default class NavbarComp extends Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#feature" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
+            <Nav.Link href="#home" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
                 onMouseOut={e => e.target.style.color = 'white'} >Home</Nav.Link>
-            <Nav.Link href="#pricing" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
+            <Nav.Link href="#library" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
                 onMouseOut={e => e.target.style.color = 'white'}>Favorites</Nav.Link>
-            <Nav.Link href="#pricing" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
+            <Nav.Link href="#search" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
                 onMouseOut={e => e.target.style.color = 'white'}>Search</Nav.Link>
           </Nav>
           <Nav>
