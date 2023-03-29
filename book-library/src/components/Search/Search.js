@@ -53,7 +53,7 @@ function Search({ placeholder, setBooks}) {
   return (
     <div className="search">
       <Container>
-        <div className="searchInputs">
+        <div className="searchInputs" id="search">
             <input ref={inputRef} type="text" value={search} placeholder={placeholder} onChange={updateSearch} onKeyPress={handleEnter}/>
             <div className="searchIcon">
             <SearchIcon onClick={handleSearch}/></div>

@@ -215,7 +215,7 @@ const RetrieveLibraryData = () => {
   const [library] = useCollectionData(query, {idField: 'id'})
 
   return (
-    <div className="userLib">
+    <div className="userLib" id="library">
       <Title label="Your Library:" />
       <div className="book-wrapper">
       {library && library.map((book, index) => <Book key={index} message={book}/>)}
