@@ -12,7 +12,9 @@ code {
     monospace;
 }
 
-
+.hide {
+  display: none;
+}
 
 .navbar {
   background-color: orange;

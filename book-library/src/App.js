@@ -5,7 +5,7 @@ import 'rebass';
 import { Label, Input } from '@rebass/forms'
 import { Box, Button } from 'rebass'
 import { Rating } from '@mui/material'
-import { useState } from 'react'
+import { Component, useState } from 'react'
 import { serverTimestamp } from 'firebase/firestore'
 import BookCards from "./components/cards/cards";
 import {Card, Image, Heading, Flex} from 'rebass';
@@ -13,6 +13,9 @@ import Checkbox from '@mui/material/Checkbox';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import SimplePopper from "./components/cards/PreviewButton";
+import { signal, computed } from "@preact/signals-react";
+import React from "react";
+import { ReactDOM } from "react";
 
 // Database Imports
 import firebase from 'firebase/compat/app';
@@ -42,48 +45,61 @@ const firebaseConfig = {
   measurementId: "G-0P65N3JF8T"
 };
 
+
 const app = firebase.initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+
+const count = signal(0);
+const friendSignal = signal('')
+
+
 let userData;
 let isNewUser;
+
+
+
 
 
 function App() {
 
   // for storing searh results from API
   const [books, setBooks] = useState("");
-
-  
   //LOGIN CODE. NEEDS TO BE IN APP.JS
   
-  const [user] = useAuthState(auth);
-  if (user){
-    userData = user.uid;
+  const [friendsList, setFriendsList] = useState([])
 
+  
+  const [user] = useAuthState(auth);
+  if(user){
+    userData = user.uid;
     console.log(userData);
-  }else{
-    return;
   }
+
+  console.log(friendsList);
+
+
 
 
   return (
     <div className='App'>
-      <SignIn />
-      <NavbarComp/>
+      <section>{user ? <><NavbarComp/>
       <Search placeholder="So, what are we reading today?" setBooks={setBooks}/>
       <BookCards books={books}/>
-      <FriendForm />
-      <RetrieveFriendsData />
-      <ReviewForm />
-      <RetrieveReviewData />
       <RetrieveLibraryData />
+      <RetrieveReviewData />
+      <RetrieveFriendsData />
+      <FriendForm />
+      <ReviewForm />
+      <section id='friend-library'></section>
+      </> : <SignIn set={setFriendsList}/>}</section>
     </div>
   );
 }
 
-function SignIn(){
+function SignIn(props){
+    const {setFriendsList} = props.set;
     const signInWithGoogle = () => {
         let username = '';
         let bio;
@@ -92,6 +108,7 @@ function SignIn(){
           const details = result.additionalUserInfo;
           isNewUser = details.isNewUser;
           console.log(isNewUser);
+          setFriendsList(Init());
           if(isNewUser){
             console.log('working')
             username = prompt('Please Enter a Username');
@@ -114,7 +131,25 @@ function SignOut(){
   )
 }
 
-const RetrieveFriendsData = () => {
+function Init(){
+  const friendsRef = firestore.collection('friend-connection').where('userId', '==', userData);
+  const friendQuery = friendsRef.orderBy('createdAt').limit(5);
+
+  const [friends] = useCollectionData(friendQuery, {idField: 'id'}); 
+
+  console.log(friends);
+
+  myPromise();
+
+  return friends;
+  
+}
+
+async function myPromise(){
+  return;
+}
+
+const RetrieveFriendsData = (props) => {
   const friendsRef = firestore.collection('friend-connection').where('userId', '==', userData);
   const friendQuery = friendsRef.orderBy('createdAt').limit(5);
 
@@ -125,7 +160,7 @@ const RetrieveFriendsData = () => {
   return (
     <div id="friends">
       <h2>Your Friends:</h2>
-      {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd}/>)}
+      {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd} />)}
     </div>
   )
 
@@ -169,12 +204,36 @@ const RetrieveLibraryData = () => {
 
   return (
     <div>
-      <h2>Your Saved Books:</h2>
+      <h2>Your Library:</h2>
       <div className="book-wrapper">
       {library && library.map((book, index) => <Book key={index} message={book}/>)}
       </div>
       
     </div>
+  )
+}
+
+const RetrieveFriendLibrary = (props) => {
+  console.log('Library is working');
+  const c = props.className;
+  const library = props.query;
+  const [Flibrary] = useCollectionData(library, {idField: 'id'})
+  console.log(library);
+
+  return (
+    <div className={c}>
+      <h2>Friend Library:</h2>
+      <div className="book-wrapper">
+      {Flibrary && Flibrary.map((book, index) => <Book key={index} message={book}/>)}
+      </div>
+      
+    </div>
+  )
+}
+
+const EmptyFriendLibrary = () => {
+  return (
+    <h1>Click a Friend!</h1>
   )
 }
 
@@ -200,12 +259,35 @@ const Book = (props) => {
 }
 
 const Friend = (props) => {
-  const {friendId, uid } = props.message;
-  return (
-      <div>
-          <h3>{friendId}</h3>
-      </div>
-  )
+  const {friendId, uid, friendName} = props.message;
+
+  const query = firestore.collection('user-library').where('userId', '==', friendId);
+  
+
+  const [isActive, setActive] = useState(false);
+
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
+
+
+
+    return (
+        <div>
+            <h3>{friendName}</h3>
+            <Button onClick={toggleClass}>Go to {friendName}'s library</Button>
+            <RetrieveFriendLibrary query={query} className={!isActive ? 'hide' : null}/>
+        </div>
+    )
+  
+
+}
+
+function FriendLibrary(library){
+  console.log(library);
+  return(
+  <RetrieveFriendLibrary library = {library}/>
+  );
 }
 
 const Review = (props) => {
@@ -320,16 +402,22 @@ const CommentForm = (props) => {
 const FriendForm = () => {
 
   const [text, setText] = useState('');
+  const friendId = firestore.collection('users').where('username', '==', text);
+  const [path] = useCollectionData(friendId, {idField: 'id'})
 
-  const data = {
+  function HandleClick(){
+
+
+    const ref = firestore.collection('friend-connection');
+
+    const data = {
       userId: userData,
-      friendId: text,
+      friendName: text,
+      friendId: path[0].user,
       createdAt: serverTimestamp()
   }
-
-  function handleClick(){
     console.log(data);
-    const ref = firestore.collection('friend-connection');
+
     ref.add(data);
   }
 
@@ -350,7 +438,7 @@ const FriendForm = () => {
           placeholder='Search by username.'
           onChange={handleChange}
           />
-          <Button onClick={handleClick} variant='outline' mr={2}>Search</Button>
+          <Button onClick={HandleClick} variant='outline' mr={2}>Search</Button>
       </Box>
   )
 }
