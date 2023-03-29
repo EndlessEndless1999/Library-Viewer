@@ -2,7 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     padding-top: 0;
-    margin: 5%
+    margin: 5%;
+    justify-content: center;
 }
 
 div .card {
