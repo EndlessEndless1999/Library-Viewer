@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+
+.hide {
+  display: none;
+}
+
 .navbar {
   background-color: orange;
 }
@@ -28,4 +33,33 @@ code {
 
 .me-auto {
   margin-left: 25px;
+}
+
+.book-wrapper {
+  background-color: beige;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.friends-wrapper {
+  background-color: beige;
+  display: flex;
+  justify-content: center;
+}
+
+.friend {
+  margin-left: 5%;
+  text-align: center;
+}
+
+.userLib {
+  background-color: beige;
+}
+
+.section-title {
+  color: black;
+  text-align: center;
+  margin-bottom: 1%;
+  background-color: beige;
 }
