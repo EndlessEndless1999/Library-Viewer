@@ -1,5 +1,5 @@
 # Library-Viewer
-An app helps user to discover and read new books.
+An app that helps user to discover and read new books.
 
 ## Description
 
@@ -14,6 +14,8 @@ BookWorm app allows users to:
 * React
 * React Bootstrap
 * Google Books API
+* Material UI
+* Removebg
 
 
 ## Installation
@@ -32,6 +34,13 @@ npm install -y
 
 ```console
 npm install axios
+```
+
+5. Install both Material UI and Material Icons for the icon components used in the app
+
+```console
+npm / yarn install @mui/material @emotion/react @emotion/styled
+npm / yarn install @mui/icons-material
 ```
 
 ## Usage
