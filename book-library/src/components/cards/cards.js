@@ -6,6 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import SimplePopper from './PreviewButton';
+import Title from '../Title';
 
 const BookCards = ({books}) => {
 
@@ -14,6 +15,7 @@ const BookCards = ({books}) => {
 
     return(
         <div className='book-wrapper'>
+        <Title label='Search Results:' />
         {books && books.map((book) => {         
             let bookInfo = book.volumeInfo;
             let bookId = book.id;

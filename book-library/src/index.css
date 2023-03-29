@@ -12,6 +12,7 @@ code {
     monospace;
 }
 
+
 .hide {
   display: none;
 }
@@ -35,7 +36,30 @@ code {
 }
 
 .book-wrapper {
+  background-color: beige;
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.friends-wrapper {
+  background-color: beige;
+  display: flex;
+  justify-content: center;
+}
+
+.friend {
+  margin-left: 5%;
+  text-align: center;
+}
+
+.userLib {
+  background-color: beige;
+}
+
+.section-title {
+  color: black;
+  text-align: center;
+  margin-bottom: 1%;
+  background-color: beige;
 }

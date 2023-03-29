@@ -16,6 +16,12 @@ import SimplePopper from "./components/cards/PreviewButton";
 import { signal, computed } from "@preact/signals-react";
 import React from "react";
 import { ReactDOM } from "react";
+import {Divider, Tabs, Tab, Typography, mBox, Modal } from '@mui/material';
+import Title from "./components/Title";
+import PropTypes from 'prop-types';
+import ReviewModal from "./components/ReviewModal";
+import CommentModal from "./components/CommentModal";
+import ViewCommentModal from "./components/ViewCommentModal";
 
 // Database Imports
 import firebase from 'firebase/compat/app';
@@ -31,6 +37,10 @@ import { getIdToken } from 'firebase/auth';
 
 import 'rebass';
 import NavbarComp from './components/NavbarComp';
+import { createTheme } from '@mui/material/styles';
+import { purple } from "@mui/material/colors";
+
+
 
 
 
@@ -91,7 +101,6 @@ function App() {
       <RetrieveReviewData />
       <RetrieveFriendsData />
       <FriendForm />
-      <ReviewForm />
       <section id='friend-library'></section>
       </> : <SignIn set={setFriendsList}/>}</section>
     </div>
@@ -158,10 +167,12 @@ const RetrieveFriendsData = (props) => {
   console.log(friends);
 
   return (
-    <div id="friends">
-      <h2>Your Friends:</h2>
+    <>
+    <Title label='Friends:' />
+    <div className="friends-wrapper">
       {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd} />)}
     </div>
+    </>
   )
 
 }
@@ -175,14 +186,16 @@ const RetrieveReviewData = () => {
     
 
   return (
-    <div>
-      <h2>Your Reviews:</h2>
-      {reviews && reviews.map((rvw, index) => <><Review key={Math.floor(Math.random() * 1000)} message={rvw}/><CommentForm message={userData} data={rvw}/><RetrieveCommentData key={Math.floor(Math.random() * 1000)} path={rvw}/></>)}
-    </div>
+    <>
+    <Title label='Your Reviews:'/>
+    <div className="book-wrapper">
+      
+      {reviews && reviews.map((rvw, index) => <><Review key={Math.floor(Math.random() * 1000)} message={rvw}/></>)}
+    </div></>
   )
 }
 
-const RetrieveCommentData = (props) => {
+export const RetrieveCommentData = (props) => {
   const {postId, uid} = props.path;
   const commentsRef = firestore.collection('comments').where('postId', '==', postId);
   console.log(commentsRef);
@@ -192,7 +205,7 @@ const RetrieveCommentData = (props) => {
   console.log(commentsRef);
 
   return (
-    <div>
+    <div id='comments'>
       {comments && comments.map((com, index) => <Comment key={index} message={com}/>)}
     </div>
   )
@@ -203,8 +216,8 @@ const RetrieveLibraryData = () => {
   const [library] = useCollectionData(query, {idField: 'id'})
 
   return (
-    <div>
-      <h2>Your Library:</h2>
+    <div className="userLib">
+      <Title label="Your Library:" />
       <div className="book-wrapper">
       {library && library.map((book, index) => <Book key={index} message={book}/>)}
       </div>
@@ -216,13 +229,14 @@ const RetrieveLibraryData = () => {
 const RetrieveFriendLibrary = (props) => {
   console.log('Library is working');
   const c = props.className;
+  const name = props.name;
   const library = props.query;
   const [Flibrary] = useCollectionData(library, {idField: 'id'})
   console.log(library);
 
   return (
     <div className={c}>
-      <h2>Friend Library:</h2>
+      <h2>{name}'s Library:</h2>
       <div className="book-wrapper">
       {Flibrary && Flibrary.map((book, index) => <Book key={index} message={book}/>)}
       </div>
@@ -231,14 +245,10 @@ const RetrieveFriendLibrary = (props) => {
   )
 }
 
-const EmptyFriendLibrary = () => {
-  return (
-    <h1>Click a Friend!</h1>
-  )
-}
-
 const Book = (props) => {
-  const { bookId, bookName, bookCover, bookPreview, postId, userId } = props.message;     
+  const { bookId, bookName, bookCover, bookPreview, postId, userId } = props.message;  
+  
+
                 return (
                     <div className="card" key={bookId}>
                         <Flex>
@@ -250,6 +260,7 @@ const Book = (props) => {
                             <Image src={bookCover} />
                             <Heading>{bookName}</Heading>
                             <SimplePopper message={bookPreview} />
+                            <ReviewModal message={props.message}/>
                             {/* Author: {bookInfo.authors.join(", ")}<br />
                             Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}
                         </Card>
@@ -273,105 +284,39 @@ const Friend = (props) => {
 
 
     return (
-        <div>
+        <>
+        <div className="friend">
             <h3>{friendName}</h3>
-            <Button onClick={toggleClass}>Go to {friendName}'s library</Button>
-            <RetrieveFriendLibrary query={query} className={!isActive ? 'hide' : null}/>
+            <Button onClick={toggleClass} color={purple}>Go to {friendName}'s library</Button>
+            <RetrieveFriendLibrary query={query} className={!isActive ? 'hide' : null} name={friendName}/>
         </div>
+        
+        </>
     )
   
 
 }
 
-function FriendLibrary(library){
-  console.log(library);
-  return(
-  <RetrieveFriendLibrary library = {library}/>
-  );
-}
 
 const Review = (props) => {
-  const {text, uid, rating, book, postId} = props.message;
-
-  return (
-    <div>
-        <h3>{book}</h3>
-        <h3>{rating}</h3>
-        <h3>{text}</h3>
-    </div>
-)
-}
-
-const Comment = (props) => {
-  const {text, user, uid, postId} = props.message
-
-  return (
-    <div id='comment'>
-      <h3>{user}</h3>
-      <h4>{text}</h4>
-    </div>
-  )
-}
-
-const ReviewForm = (props) => {
-  const [text, setText] = useState('');
-  const [score, setScore] = useState('');
-  const postID = userData + 'BOOK';
-
-  const data = {
-      book: 'Book',
-      createdAt: serverTimestamp(),
-      postId: postID,
-      rating: score,
-      text: text,
-  }
-
-  async function handleClick(){
-    const ref = firestore.collection('reviews');
-    ref.add(data);
-  }
-
-  function handleChange(event){
-      setText(event.target.value);
-  }
-
-  function handleReviewChange(event){
-      setScore(event.target.value)
-  }
+  console.log(props.message);
+  const {book, cover, createdAt, postId, rating, text}  = props.message;  
+  
+  function CommentForm(){
+    const [text, setText] = useState('');
 
 
 
+   function handleClick(){
 
-
-  return (
-      <Box>
-          <Label htmlFor='review'>Review</Label>
-          <Rating name="size-medium" defaultValue={2} onChange={handleReviewChange}/>
-          <Input
-          id='reviewForm'
-          name='review'
-          type='review'
-          placeholder='Add Your Review Here.'
-          onChange={handleChange}
-          />
-          <Button onClick={handleClick} variant='outline' mr={2}>Submit</Button>
-      </Box>
-  )
-}
-
-const CommentForm = (props) => {
-  const {postId} = props.data
-
-  const [text, setText] = useState('');
-
-  const data = {
+    const data = {
       postId: postId,
       text: text,
       user: userData,
       createdAt: serverTimestamp()
   }
 
-  function handleClick(){
+
     console.log(data);
     const ref = firestore.collection('comments');
     ref.add(data);
@@ -397,6 +342,99 @@ const CommentForm = (props) => {
           <Button onClick={handleClick} variant='outline' mr={2}>Submit</Button>
       </Box>
   )
+  }
+
+
+
+  return (
+      <div className="card" key={book}>
+          <Flex>
+          <Card 
+          p={3}
+          width={256}
+          color='black'
+          >
+              <Image src={cover} />
+              <Heading>{book}</Heading>
+              <SimplePopper message={text} />
+              <Rating name="size-medium" value={rating} readOnly/>
+              {/* Author: {bookInfo.authors.join(", ")}<br />
+              Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}
+          </Card>
+          </Flex>
+      </div>
+  )
+}
+
+const Comment = (props) => {
+  const {text, user, uid, postId} = props.message
+
+  return (
+    <div id='comment'>
+      <h3>{user}</h3>
+      <h4>{text}</h4>
+    </div>
+  )
+}
+
+export const ReviewForm = (props) => {
+  
+
+  
+  const [text, setText] = useState('');
+  const [score, setScore] = useState('');
+  
+
+
+
+  async function handleClick(){
+    const { bookName, bookCover, bookId} = props.message;
+    const postID = userData + bookId;
+    const data = {
+      user: userData,
+      book: bookName,
+      cover: bookCover,
+      createdAt: serverTimestamp(),
+      postId: postID,
+      rating: score,
+      text: text,
+  }
+    const ref = firestore.collection('reviews');
+    ref.add(data);
+  }
+
+  function handleChange(event){
+      setText(event.target.value);
+  }
+
+  function handleReviewChange(event){
+      setScore(event.target.value)
+  }
+
+
+
+
+ 
+  return (
+      <Box>
+          <Label htmlFor='review'>Review</Label>
+          <Rating name="size-medium" defaultValue={2} onChange={handleReviewChange}/>
+          <Input
+          id='reviewForm'
+          name='review'
+          type='review'
+          placeholder='Add Your Review Here.'
+          onChange={handleChange}
+          />
+          <Button onClick={handleClick} variant='outline' mr={2}>Submit</Button>
+      </Box>
+  )
+}
+
+export const CommentForm = (props) => {
+  
+
+  
 }
 
 const FriendForm = () => {

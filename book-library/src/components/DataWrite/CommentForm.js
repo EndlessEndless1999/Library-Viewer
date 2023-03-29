@@ -4,16 +4,18 @@ import { useState } from 'react';
 
 
 const CommentForm = (props) => {
-    // const {postId, user} = props.message;
+
     const [text, setText] = useState('');
-    const data = {
-        // postId: postId,
-        text: text,
-        user: 'Rosie',
-        createdAt: 'TIMESTAMP'
-    }
+
 
     function handleClick(){
+        const {postId, user} = props.message;
+        const data = {
+            postId: postId,
+            text: text,
+            user: 'Rosie',
+            createdAt: 'TIMESTAMP'
+        }
         console.log(data);
     }
 
