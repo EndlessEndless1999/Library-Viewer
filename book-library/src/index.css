@@ -12,6 +12,21 @@ code {
     monospace;
 }
 
+.sign-out {
+  color: white;
+  background-color: orange;
+  border: none;
+}
+
+.friend-form-wrapper {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+}
+
 
 .hide {
   display: none;
@@ -49,7 +64,6 @@ code {
 }
 
 .friend {
-  margin-left: 5%;
   text-align: center;
 }
 
@@ -62,4 +76,43 @@ code {
   text-align: center;
   margin-bottom: 1%;
   background-color: beige;
+}
+
+.login-page{
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-rows: 25% 50% 25%;
+  grid-template-areas: 
+  '. .. ...'
+  '. main ...'
+  '. .. ...'
+  ;
+  background-color: orange;
+  height: 100vh;
+  width: 100vh;
+  justify-self: center;
+}
+
+.login-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  left: 78%;
+  grid-area: main;
+  color: white;
+}
+
+.login-title {
+  background-color: beige;
+  color: black;
+  text-align: center;
+}
+
+.worm {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  position: relative;
+  left: 80.5%;
+  top: 19.5%;
 }

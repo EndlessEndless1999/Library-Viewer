@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { SignOut } from '../App';
 
 /*Navbar with some css styles - font color and hover effect*/
 
@@ -22,10 +23,14 @@ export default class NavbarComp extends Component {
                 onMouseOut={e => e.target.style.color = 'white'}>Favorites</Nav.Link>
             <Nav.Link href="#search" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
                 onMouseOut={e => e.target.style.color = 'white'}>Search</Nav.Link>
+            <Nav.Link href="#review" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
+                onMouseOut={e => e.target.style.color = 'white'}>Reviews</Nav.Link>
+            <Nav.Link href="#friend-section" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
+                onMouseOut={e => e.target.style.color = 'white'}>Friends</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link className="profile" href="#deets" style={{color: "white"}} onMouseOver={e => e.target.style.color = 'grey'}
-                onMouseOut={e => e.target.style.color = 'white'}>Profile</Nav.Link>
+                onMouseOut={e => e.target.style.color = 'white'}><SignOut className='sign-out'/></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

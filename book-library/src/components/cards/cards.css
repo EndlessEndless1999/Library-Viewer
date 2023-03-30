@@ -13,7 +13,7 @@ div .card {
     margin: 10px;
     padding: 20px;
     overflow-y: scroll;
-    max-height: 500px;
+    max-height: 350px;
     max-width: 300px;
     width: 300px;
     background-color: #E5E5E5;

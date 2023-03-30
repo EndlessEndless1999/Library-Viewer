@@ -21,6 +21,9 @@ import Title from "./components/Title";
 import PropTypes from 'prop-types';
 import ReviewModal from "./components/ReviewModal";
 import CommentModal from "./components/CommentModal";
+import TextField from '@mui/material/TextField';
+import Container from "react-bootstrap/esm/Container";
+import SearchIcon from '@mui/icons-material/Search';
 
 // Database Imports
 import firebase from 'firebase/compat/app';
@@ -93,15 +96,14 @@ function App() {
 
   return (
     <div className='App'>
-      <section>{user ? <><NavbarComp/>
+      <>{user ? <><NavbarComp/>
       <Search placeholder="So, what are we reading today?" setBooks={setBooks}/>
       <BookCards books={books}/>
       <RetrieveLibraryData />
       <RetrieveReviewData />
       <RetrieveFriendsData />
-      <FriendForm />
       <section id='friend-library'></section>
-      </> : <SignIn set={setFriendsList}/>}</section>
+      </> : <SignIn set={setFriendsList}/>}</>
     </div>
   );
 }
@@ -116,7 +118,6 @@ function SignIn(props){
           const details = result.additionalUserInfo;
           isNewUser = details.isNewUser;
           console.log(isNewUser);
-          setFriendsList(Init());
           if(isNewUser){
             console.log('working')
             username = prompt('Please Enter a Username');
@@ -124,18 +125,27 @@ function SignIn(props){
             const query = firestore.collection('users').doc(userData).set({user: userData, username: username, bio: bio})
           }
         });
-
-
         
     }
     return (
-        <button onClick={signInWithGoogle}>Sign In</button>
+        <div className="login-page">
+          <div className="login-main">
+              <img src={require('./images/bookworm-removebg-preview.png')} alt="logo" className="logo worm"/>
+              <img src={require('./images/bookworm-removebg-preview.png')} alt="logo" className="logo"/>
+              <h1 className="login-title">Welcome to BookWorms!</h1>
+              <h2 className="login-title">Please Sign In:</h2>
+              <Button onClick={signInWithGoogle}>Sign In</Button>
+            </div>
+
+          </div>
+        
     )
 }
 
-function SignOut(){
+
+export function SignOut(){
   return auth.currentUser && (
-    <button onClick={() => auth.signOut()}>Sign Out</button>
+    <button onClick={() => auth.signOut()} className='sign-out'>Sign Out</button>
   )
 }
 
@@ -167,7 +177,10 @@ const RetrieveFriendsData = (props) => {
 
   return (
     <>
+    <div id='friend-section'>
     <Title label='Friends:' />
+    </div>
+    <FriendForm />
     <div className="friends-wrapper">
       {friends && friends.map(frnd => <Friend key={frnd.id} message={frnd} />)}
     </div>
@@ -178,7 +191,7 @@ const RetrieveFriendsData = (props) => {
 
 const RetrieveReviewData = () => {
   const reviewsRef = firestore.collection('reviews');
-  const reviewsQuery = reviewsRef.orderBy('createdAt').limit(5);
+  const reviewsQuery = reviewsRef.orderBy('createdAt', 'desc').limit(5);
   const [reviews] = useCollectionData(reviewsQuery, {idField: 'id'}); 
 
   
@@ -186,8 +199,8 @@ const RetrieveReviewData = () => {
 
   return (
     <>
-    <Title label='Your Reviews:'/>
-    <div className="book-wrapper">
+    <Title label='Latest Reviews:'/>
+    <div className="book-wrapper" id='review'>
       
       {reviews && reviews.map((rvw, index) => <><Review key={Math.floor(Math.random() * 1000)} message={rvw}/></>)}
     </div></>
@@ -235,7 +248,7 @@ const RetrieveFriendLibrary = (props) => {
 
   return (
     <div className={c}>
-      <h2>{name}'s Library:</h2>
+      <Title text={name + `'s Library:'`}></Title>
       <div className="book-wrapper">
       {Flibrary && Flibrary.map((book, index) => <Book key={index} message={book}/>)}
       </div>
@@ -283,14 +296,14 @@ const Friend = (props) => {
 
 
     return (
-        <>
+       
         <div className="friend">
-            <h3>{friendName}</h3>
-            <Button onClick={toggleClass} color={purple}>Go to {friendName}'s library</Button>
+            <Title label={friendName}/>
+            <Button onClick={toggleClass} color={purple} >Go to {friendName}'s library</Button>
             <RetrieveFriendLibrary query={query} className={!isActive ? 'hide' : null} name={friendName}/>
         </div>
         
-        </>
+        
     )
   
 
@@ -353,10 +366,10 @@ const Review = (props) => {
           width={256}
           color='black'
           >
+              <Rating name="size-medium" value={rating} readOnly/>
               <Image src={cover} />
               <Heading>{book}</Heading>
               <SimplePopper message={text} />
-              <Rating name="size-medium" value={rating} readOnly/>
               {/* Author: {bookInfo.authors.join(", ")}<br />
               Google Book Link: <a href={bookInfo.infoLink}>{bookInfo.infoLink}</a><br /> */}
           </Card>
@@ -466,17 +479,10 @@ const FriendForm = () => {
 
 
   return (
-      <Box>
-          <Label htmlFor='comment'>Add a Friend!</Label>
-          <Input
-          id='friendForm'
-          name='friend'
-          type='friend'
-          placeholder='Search by username.'
-          onChange={handleChange}
-          />
-          <Button onClick={HandleClick} variant='outline' mr={2}>Search</Button>
-      </Box>
+      <div className="friend-form-wrapper">
+          <TextField id="outlined-basic" label="Add a Friend!" variant="outlined" onChange={handleChange}/>
+          <Button onClick={HandleClick} variant='outline' mr={2} color='black' size={'large'}>Search</Button>
+      </div>
   )
 }
 
