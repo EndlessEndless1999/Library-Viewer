@@ -1,4 +1,4 @@
-# Library-Viewer
+# BookWorms
 An app that helps user to discover and read new books.
 
 ## Description
@@ -16,6 +16,7 @@ BookWorm app allows users to:
 * Google Books API
 * Material UI
 * Removebg
+* Firebase
 
 
 ## Installation
@@ -43,11 +44,31 @@ npm / yarn install @mui/material @emotion/react @emotion/styled
 npm / yarn install @mui/icons-material
 ```
 
+6. Install Firebase and Firebase React Hooks
+
+```console
+npm / yarn install firebase
+npm / yarn install firebase-react-hooks
+```
+
+
 ## Usage
 Run the app in the development mode by executing `npm start`.
 Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
+Then create an account by signing in with google and filling out the dialogs. Then feel free to add any books, reviews and friends!
+
+## Links
+
+Live Site : https://storied-brigadeiros-6e4c58.netlify.app/
+
+Github : https://github.com/EndlessEndless1999/Library-Viewer
+
 ### Screenshots:
 
+![HomePage](./book-library/src/images/Screenshot%202023-03-30%20at%2003.25.50.png)
 
+![Library](./book-library/src/images/Screenshot%202023-03-30%20at%2003.27.52.png)
+
+![Reviews](./book-library/src/images/Screenshot%202023-03-30%20at%2003.28.04.png)
 
